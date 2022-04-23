@@ -5,13 +5,27 @@ import Nav from './components/Nav'
 
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import Signin from './pages/Signin';
+import Signup from './pages/Signup';
 
 const App = () => {
   return (
-    <Router>
-      <Nav />
-      
-    </Router>
+	<Router>
+		<Nav />
+		<Switch>
+			<Route exact path="/">
+				<Home />
+			</Route>
+			
+			<Route path="/signin">
+				<Signin />
+			</Route>
+
+			<Route path="/signup">
+				<Signup />
+			</Route>
+		</Switch>
+	</Router>
   );
 };
 
