@@ -23,7 +23,6 @@ export default function Signin() {
 				<Link to="/signup" >
 					<button className='bg-green-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg'>Sign Up</button>
 				</Link>
-
 			</div>
 		</div>
     </div>
