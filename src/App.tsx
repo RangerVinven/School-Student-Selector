@@ -17,13 +17,18 @@ const App = () => {
 				<Home />
 			</Route>
 			
-			<Route path="/signin">
+			<Route exact path="/signin">
 				<Signin />
 			</Route>
 
-			<Route path="/signup">
+			<Route exact path="/signup">
 				<Signup />
 			</Route>
+
+			<Route>
+				<NotFound />
+			</Route>
+
 		</Switch>
 	</Router>
   );
