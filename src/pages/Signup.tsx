@@ -12,14 +12,18 @@ export default function Signup() {
         <hr className='my-2' />
 
         <div className="w-full flex flex-col items-center">
-          <input placeholder="Email" className='border-gray-300 rounded-md border-2 pl-1 mt-1 mb-2'></input>
-          <input placeholder="Password" className='border-gray-300 rounded-md border-2 pl-1 mb-4'></input>
+				<input placeholder="Email" className='border-gray-300 rounded-md border-2 pl-1 mt-1 mb-2'></input>
+				<input placeholder="Password" className='border-gray-300 rounded-md border-2 pl-1 mb-4'></input>
+				<button className='bg-green-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg'>Sign Up</button>
 
-          <Link to="/signup" className='mt-2' >
-            <button className='bg-green-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg'>Sign Up</button>
-          </Link>
+				<div className="my-2 italic">
+					<p>Or</p>
+				</div>
 
-        </div>
+				<Link to="/signin" >
+					<button className='bg-blue-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg'>Sign In</button>
+				</Link>
+			</div>
 		  </div>
     </div>
   )
