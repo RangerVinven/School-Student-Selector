@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
@@ -9,29 +9,50 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 
 const App = () => {
-  return (
-	<Router>
-		<Nav />
-		<Switch>
-			<Route exact path="/">
-				<Home />
-			</Route>
-			
-			<Route exact path="/signin">
-				<Signin />
-			</Route>
 
-			<Route exact path="/signup">
-				<Signup />
-			</Route>
+	const [token, setToken] = useState();
 
-			<Route>
-				<NotFound />
-			</Route>
+	if(!token) {
+		return (
+			<Router>
+				<Switch>
+					<Route exact path="/signup">
+						<Nav />
+						<Signup />
+					</Route>
 
-		</Switch>
-	</Router>
-  );
+					<Route path="/">
+						<Nav />
+						<Signin />
+					</Route>
+				</Switch>
+			</Router>
+		)
+	}
+
+	return (
+		<Router>
+			<Nav />
+			<Switch>
+				<Route exact path="/">
+					<Home />
+				</Route>
+				
+				<Route exact path="/signin">
+					<Signin />
+				</Route>
+
+				<Route exact path="/signup">
+					<Signup />
+				</Route>
+
+				<Route>
+					<NotFound />
+				</Route>
+
+			</Switch>
+		</Router>
+	);
 };
 
 export default App;
