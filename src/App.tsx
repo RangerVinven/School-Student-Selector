@@ -12,6 +12,7 @@ const App = () => {
 
 	const [token, setToken] = useState();
 
+	// Redirects the user to the signin if the user doesn't have a session token
 	if(!token) {
 		return (
 			<Router>
@@ -23,7 +24,7 @@ const App = () => {
 
 					<Route path="/">
 						<Nav />
-						<Signin />
+						<Signin setToken={setToken} />
 					</Route>
 				</Switch>
 			</Router>
