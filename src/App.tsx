@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
@@ -8,9 +8,11 @@ import NotFound from './pages/NotFound'
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 
+import useToken from "./customHooks/useToken";
+
 const App = () => {
 
-	const [token, setToken] = useState("");
+	const { token, setToken } = useToken();
 
 	// Redirects the user to the signin if the user doesn't have a session token
 	if(!token) {

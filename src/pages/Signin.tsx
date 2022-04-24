@@ -24,6 +24,7 @@ export default function Signin(props: Props) {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [correctCreds, setCorrectCreds] = useState(false);
 
 	return (
 		<div className="flex items-center justify-center mt-40">
@@ -36,7 +37,18 @@ export default function Signin(props: Props) {
 				<div className="w-full flex flex-col items-center">
 					<input onChange={e => setEmail(e.target.value)} placeholder="Email" className='border-gray-300 rounded-md border-2 pl-1 mt-1 mb-2'></input>
 					<input onChange={e => setPassword(e.target.value)} placeholder="Password" className='border-gray-300 rounded-md border-2 pl-1 mb-4'></input>
-					<button className='bg-blue-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg' onClick={async () => props.setToken(Object.values(await signinUser({email, password}))[0])}>Sign In</button>
+
+					<button className='bg-blue-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg' onClick={async () => {
+						// Gets the response from the signin
+						const response = await signinUser({email, password});
+
+						// Sets the token if the user enters the correct credentials
+						if(response.hasOwnProperty("token")) {
+							props.setToken(JSON.stringify(response));
+						} else {
+							setCorrectCreds(false);
+						}
+					}}>Sign In</button>
 
 					<div className="my-2 italic">
 						<p>Or</p>
