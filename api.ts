@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
-app.get("/signin", (req, res) => {
+app.post("/signin", (req, res) => {
     res.send({
         "token": "fh64lnz"
     })
