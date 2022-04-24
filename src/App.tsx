@@ -10,7 +10,7 @@ import Signup from './pages/Signup';
 
 const App = () => {
 
-	const [token, setToken] = useState();
+	const [token, setToken] = useState("");
 
 	// Redirects the user to the signin if the user doesn't have a session token
 	if(!token) {
@@ -40,7 +40,7 @@ const App = () => {
 				</Route>
 				
 				<Route exact path="/signin">
-					<Signin />
+					<Signin setToken={setToken} />
 				</Route>
 
 				<Route exact path="/signup">

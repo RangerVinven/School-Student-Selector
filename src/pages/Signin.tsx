@@ -6,6 +6,20 @@ interface Props {
 	setToken: Function
 }
 
+// Signs the user in
+async function signinUser(credentials:{
+	email: string,
+	password: string
+	}) {
+	return fetch("http://localhost:8000/signin", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json" 
+		},
+		body: JSON.stringify(credentials)
+	}).then(data => data.json());
+}
+
 export default function Signin(props: Props) {
 
 	const [email, setEmail] = useState("");
@@ -22,7 +36,7 @@ export default function Signin(props: Props) {
 				<div className="w-full flex flex-col items-center">
 					<input onChange={e => setEmail(e.target.value)} placeholder="Email" className='border-gray-300 rounded-md border-2 pl-1 mt-1 mb-2'></input>
 					<input onChange={e => setPassword(e.target.value)} placeholder="Password" className='border-gray-300 rounded-md border-2 pl-1 mb-4'></input>
-					<button className='bg-blue-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg'>Sign In</button>
+					<button className='bg-blue-400 w-24 text-md font-bold py-1 hover:shadow-md rounded-lg' onClick={async () => props.setToken(Object.values(await signinUser({email, password}))[0])}>Sign In</button>
 
 					<div className="my-2 italic">
 						<p>Or</p>
