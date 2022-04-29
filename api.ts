@@ -21,6 +21,15 @@ let connection = mysql.createConnection({
     database: process.env.DATABASE_DATABASE
 });
 
+// Generates a session token
+const generateToken = () => {
+    const charsToChooseFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@£$%^&*())-=_+{}|[];':";
+    const currentEpochTime = Number(Date.now()).toString();
+
+    const token = cryptoModule.createHmac("sha256", currentEpochTime + charsToChooseFrom[Math.random() * charsToChooseFrom.length] + charsToChooseFrom[Math.random() * charsToChooseFrom.length]).digest("hex");
+    return token;
+} 
+
 // Connects to the mysql database
 connection.connect(function(err) {
     if (err) {
@@ -47,18 +56,24 @@ connection.connect(function(err) {
     // Signs the user up
     app.post("/api/signup", (req, res) => {
         // Makes sure the user enters the username and password
-        if(req.body.username === "" || req.body.password === "") {
+        if(req.body.username === "" || req.body.username === undefined || req.body.password === "" || req.body.password === undefined) {
             res.send({
-                ...(req.body.username === "" && {"error": "Username not entered"}),
-                ...(req.body.password === "" && {"error": "Password not entered"}),
+                "error": {
+                    ...((req.body.username === "" || req.body.username === undefined) && {"usernameError": "Username not entered"}),
+                    ...((req.body.password === "" || req.body.password === undefined) && {"passwordError": "Password not entered"}),
+                }
             });
         } else {
+            const token = generateToken();
+
             // Adds the user to the database
-            connection.query("INSERT INTO Users (Username, Password) VALUES (?, ?);", [req.body.username, cryptoModule.createHmac("sha256", req.body.password).digest("hex")], (err, result) => {
+            connection.query("INSERT INTO Users (Username, Password, SessionToken) VALUES (?, ?, ?);", [req.body.username, cryptoModule.createHmac("sha256", req.body.password).digest("hex"), token], (err, result) => {
                 if (err) throw err;
 
-                console.log(result);
-                res.send(200);
+                // Responds with the user's session token
+                res.send({
+                    "token": token
+                })
             });
         }
     });
