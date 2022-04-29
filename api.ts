@@ -19,7 +19,7 @@ let connection = mysql.createConnection({
 });
 
 // Connects to the mysql database
-connection.connect(function(err) {
+connection.connect(function(err: any) {
     if (err) {
       return console.error('error: ' + err.message);
     }
@@ -27,7 +27,7 @@ connection.connect(function(err) {
     console.log('Connected to the MySQL server.');
     
     // Signs the user up
-    app.post("/api/signin", (req, res) => {
+    app.post("/api/signin", (req: any, res: any) => {
         // Check if the user enters valid credentials
         if(req.body.email === "test" && req.body.password === "test") {
             res.send({
@@ -39,6 +39,19 @@ connection.connect(function(err) {
             })
         }
         
+    });
+
+    // Signs the user up
+    app.post("/api/signup", (req: any, res: any) => {
+        // Makes sure the user enters the username and password
+        if(req.body.username === "" || req.body.password === "") {
+            res.send({
+                ...(req.body.username === "" && {"error": "Username not entered"}),
+                ...(req.body.password === "" && {"error": "Password not entered"}),
+            });
+        } else {
+            
+        }
     });
 
 });
