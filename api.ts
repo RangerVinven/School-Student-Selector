@@ -4,6 +4,9 @@ const mysql = require("mysql");
 require("dotenv").config();
 const bodyParser = require("body-parser");
 
+// For hashing the password
+const cryptoModule = require("crypto");
+
 // Configures the app variable
 const app = express();
 app.use(cors());
@@ -19,7 +22,7 @@ let connection = mysql.createConnection({
 });
 
 // Connects to the mysql database
-connection.connect(function(err: any) {
+connection.connect(function(err) {
     if (err) {
       return console.error('error: ' + err.message);
     }
@@ -27,7 +30,7 @@ connection.connect(function(err: any) {
     console.log('Connected to the MySQL server.');
     
     // Signs the user up
-    app.post("/api/signin", (req: any, res: any) => {
+    app.post("/api/signin", (req, res) => {
         // Check if the user enters valid credentials
         if(req.body.email === "test" && req.body.password === "test") {
             res.send({
@@ -42,7 +45,7 @@ connection.connect(function(err: any) {
     });
 
     // Signs the user up
-    app.post("/api/signup", (req: any, res: any) => {
+    app.post("/api/signup", (req, res) => {
         // Makes sure the user enters the username and password
         if(req.body.username === "" || req.body.password === "") {
             res.send({
@@ -50,7 +53,13 @@ connection.connect(function(err: any) {
                 ...(req.body.password === "" && {"error": "Password not entered"}),
             });
         } else {
-            
+            // Adds the user to the database
+            connection.query("INSERT INTO Users (Username, Password) VALUES (?, ?);", [req.body.username, cryptoModule.createHmac("sha256", req.body.password).digest("hex")], (err, result) => {
+                if (err) throw err;
+
+                console.log(result);
+                res.send(200);
+            });
         }
     });
 
