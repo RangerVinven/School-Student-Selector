@@ -13,7 +13,7 @@ export default function WheelPage() {
 	const [selectedOptions, setSelectedOptions] = useState<Array<string>>([]);
 
 	return (
-		<div className="">
+		<div>
 			<div className="mt-5">
 				<WheelNavbar />
 			</div>
@@ -37,13 +37,13 @@ export default function WheelPage() {
 						{
 							selectedOptions.map(option => {
 								return (
-									<>
+									<div key={option}>
 										<div className="flex justify-between items-center">
 											<h1 className="text-lg">{option}</h1>
 											<button className="p-1 px-1 bg-red-500 rounded-lg">Clear</button>
 										</div>
 										<hr className="mt-1 mb-2" />
-									</>
+									</div>
 								)
 							})
 						}

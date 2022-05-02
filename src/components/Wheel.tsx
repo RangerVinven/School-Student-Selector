@@ -2,15 +2,27 @@ import React, { useState } from 'react'
 import { Wheel as WinWheel } from 'react-custom-roulette';
 
 interface Props {
-    options: { option: string; }[],
+    options: { option: string }[],
 
-    selectedOptions: Array<string>,
+    selectedOptions: string[],
     setSelectedOptions: Function
 }
+
 export default function Wheel(props: Props) {
     const [mustSpin, setMustSpin] = useState(false);
     const [prizeNumber, setPrizeNumber] = useState(0);
-      
+    
+    // // Checks if the winningNum (the index for the option that will be chosen) is unique
+    // const winningNumIsUnique = (num: number) => {
+    //     props.selectedOptions.forEach(selectedOption => {
+    //         if(selectedOption.optionName === props.options[num].option) {
+    //             return false;
+    //         }
+    //     });
+
+    //     return true;
+    // }
+
     return (
         <div>
             <WinWheel mustStartSpinning={mustSpin}
@@ -21,7 +33,7 @@ export default function Wheel(props: Props) {
             onStopSpinning={() => {
                 setMustSpin(false);
 
-                //Adds the winningNum to the selectedOptions
+                // Adds the winning option to the selectedOptions
                 props.setSelectedOptions([...props.selectedOptions, props.options[prizeNumber].option]);
             }}
             />
