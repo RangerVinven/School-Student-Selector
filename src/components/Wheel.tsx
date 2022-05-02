@@ -3,16 +3,15 @@ import { Wheel as WinWheel } from 'react-custom-roulette';
 
 export default function Wheel() {
     const [mustSpin, setMustSpin] = useState(false);
-    const [prizeNumber, setPrizeNumber] = useState(0)
+    const [prizeNumber, setPrizeNumber] = useState(0);
+    const [selectedOptions, setSelectedOptions] = useState<Array<Number>>([]);
 
     const data = [
         { option: '0' },
         { option: '1' },
         { option: '2' },
-      ]      
-
+      ];
       
-
     return (
         <div>
             <WinWheel mustStartSpinning={mustSpin}
@@ -23,11 +22,33 @@ export default function Wheel() {
             onStopSpinning={() => setMustSpin(false)}
             />
 
-            <button className="p-1 px-2 font-bold bg-purple-500 rounded-lg" onClick={() => {
-                const winningNum = Math.floor(Math.random() * data.length);
-                setPrizeNumber(winningNum);
-                setMustSpin(true);
-            }}>Spin</button>
+            <div className="flex justify-evenly mt-1">
+                <button className="p-1 px-2 text-white  font-bold bg-purple-500 rounded-lg" onClick={() => {
+                    const winningNum = Math.floor(Math.random() * data.length);
+
+                    //Adds the winningNum to the selectedOptions
+                    setSelectedOptions([...selectedOptions, winningNum]);
+
+                    // Makes the wheel spin
+                    setPrizeNumber(winningNum);
+                    setMustSpin(true);
+                }}>Spin</button>
+
+                <button className="p-1 px-2 text-white font-bold bg-purple-500 rounded-lg" onClick={() => {
+                    let winningNum: number = Math.floor(Math.random() * data.length);
+                    
+                    // Makes sure the winningNum is unique
+                    while(selectedOptions.includes(winningNum)) {
+                        winningNum = Math.floor(Math.random() * data.length);
+                    }
+                    // Adds the winningNum to the selectedOptions
+                    setSelectedOptions([...selectedOptions, winningNum]);
+
+                    // Makes the wheel spin
+                    setPrizeNumber(winningNum);
+                    setMustSpin(true);
+                }}>Unique Spin</button>
+            </div>
         </div>
     )
 }
