@@ -10,7 +10,10 @@ export default function WheelPage() {
         { option: "Mum" },
         { option: "Dad" }
 	]);
-	const [selectedOptions, setSelectedOptions] = useState<Array<string>>([]);
+	const [selectedOptions, setSelectedOptions] = useState<Array<{
+		id: number,
+		option: string
+	}>>([]);
 
 	return (
 		<div>
@@ -37,10 +40,12 @@ export default function WheelPage() {
 						{
 							selectedOptions.map(option => {
 								return (
-									<div key={option}>
+									<div key={option.id}>
 										<div className="flex justify-between items-center">
-											<h1 className="text-lg">{option}</h1>
-											<button className="p-1 px-1 bg-red-500 rounded-lg">Clear</button>
+											<h1 className="text-lg">{option.option}</h1>
+											<button className="p-1 px-1 bg-red-500 rounded-lg" onClick={() => {
+												
+											}}>Clear</button>
 										</div>
 										<hr className="mt-1 mb-2" />
 									</div>
