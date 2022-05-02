@@ -9,7 +9,9 @@ const cryptoModule = require("crypto");
 
 // Configures the app variable
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: "*"
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -36,7 +38,7 @@ connection.connect(function(err) {
       return console.error('error: ' + err.message);
     }
   
-    console.log('Connected to the MySQL server.');
+    console.log("Connected to the MySQL server.");
     
     // Signs the user up
     app.post("/api/signin", (req, res) => {
@@ -56,9 +58,10 @@ connection.connect(function(err) {
     // Signs the user up
     app.post("/api/signup", (req, res) => {
         // Makes sure the user enters the username and password
-        if(req.body.username === "" || req.body.username === undefined || req.body.password === "" || req.body.password === undefined) {
+        if(req.body.email === "" || req.body.email === undefined || req.body.username === "" || req.body.username === undefined || req.body.password === "" || req.body.password === undefined) {
             res.send({
                 "error": {
+                    ...((req.body.email === "" || req.body.email === undefined) && {"emailError": "Email not entered"}),
                     ...((req.body.username === "" || req.body.username === undefined) && {"usernameError": "Username not entered"}),
                     ...((req.body.password === "" || req.body.password === undefined) && {"passwordError": "Password not entered"}),
                 }
@@ -66,15 +69,23 @@ connection.connect(function(err) {
         } else {
             const token = generateToken();
 
-            // Adds the user to the database
-            connection.query("INSERT INTO Users (Username, Password, SessionToken) VALUES (?, ?, ?);", [req.body.username, cryptoModule.createHmac("sha256", req.body.password).digest("hex"), token], (err, result) => {
-                if (err) throw err;
+            try {
+                // Adds the user to the database
+                connection.query("INSERT INTO Users (Username, Password, SessionToken, Email) VALUES (?, ?, ?, ?);", [req.body.username, cryptoModule.createHmac("sha256", req.body.password).digest("hex"), token, req.body.email], (err, result) => {
+                    if (err) throw err;
 
-                // Responds with the user's session token
+                    // Responds with the user's session token
+                    res.send({
+                        "token": token
+                    })
+                });
+            } catch(err) {
                 res.send({
-                    "token": token
+                    "error": "An error has occured",
+                    "errorMessage": err
                 })
-            });
+            }
+            
         }
     });
 

@@ -9,6 +9,7 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 
 import useToken from "./customHooks/useToken";
+import CreateWheel from './pages/CreateWheel'
 
 const App = () => {
 
@@ -21,7 +22,7 @@ const App = () => {
 				<Switch>
 					<Route exact path="/signup">
 						<Nav />
-						<Signup />
+						<Signup setToken={setToken} />
 					</Route>
 
 					<Route path="/">
@@ -46,7 +47,11 @@ const App = () => {
 				</Route>
 
 				<Route exact path="/signup">
-					<Signup />
+					<Signup setToken={setToken} />
+				</Route>
+
+				<Route exact path="/createWheel">
+					<CreateWheel />
 				</Route>
 
 				<Route>
