@@ -44,7 +44,19 @@ export default function WheelPage() {
 										<div className="flex justify-between items-center">
 											<h1 className="text-lg">{option.option}</h1>
 											<button className="p-1 px-1 bg-red-500 rounded-lg" onClick={() => {
-												
+												let newSelectedOptions = selectedOptions;
+
+												// Gets the index of the selected option
+												let index = 0;
+												for (let i = 0; i < selectedOptions.length; i++) {
+													if(selectedOptions[i].id === option.id) {
+														index = i;
+													}													
+												}
+
+												// Removes the selected option from the array
+												newSelectedOptions.splice(index, 1);																								
+												setSelectedOptions(newSelectedOptions);												
 											}}>Clear</button>
 										</div>
 										<hr className="mt-1 mb-2" />

@@ -61,9 +61,7 @@ export default function Wheel(props: Props) {
                     let counter = 0;
 
                     // Makes sure the winning number is unique
-                    let isUnique = winningNumIsUnique(winningNum);
-                    console.log(isUnique);
-                    
+                    let isUnique = winningNumIsUnique(winningNum);                    
                     while(!isUnique) {
                         const oldNum = winningNum;
                         while(winningNum === oldNum) {
@@ -71,7 +69,6 @@ export default function Wheel(props: Props) {
                         }
                         
                         isUnique = winningNumIsUnique(winningNum);
-                        console.log("Hi");
 
                         // Breaks out of the function if all options have been selected
                         if(counter > props.options.length) {
@@ -80,8 +77,7 @@ export default function Wheel(props: Props) {
                         }
                         counter++;
                     }
-
-                    console.log(winningNum);
+                    
                     // Makes the wheel spin
                     setPrizeNumber(winningNum);
                     setMustSpin(true);
